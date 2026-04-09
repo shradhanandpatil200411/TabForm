@@ -24,7 +24,6 @@ export const data = [
         type: "email",
         option: [],
       },
-      // Keep type 'text' for phone numbers so we can control length easily
       {
         id: 4,
         label: "Phone Number",
@@ -53,7 +52,7 @@ export const data = [
       },
       {
         schemaName: "phoneNumber",
-        type: "string", // Changed to string for length validation
+        type: "string",
         minLength: {
           value: 10,
           errorMessage: "Phone number must be exactly 10 digits",
@@ -62,7 +61,7 @@ export const data = [
           value: 10,
           errorMessage: "Phone number must be exactly 10 digits",
         },
-        regex: "^[0-9]+$", // Ensures only numbers are typed
+        regex: "^[0-9]+$",
       },
     ],
   },

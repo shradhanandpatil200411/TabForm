@@ -1,6 +1,8 @@
 import React from "react";
 
-function ThankYou() {
+function ThankYou({ allFormData, progress }) {
+  console.log({ allFormData, progress });
+
   return (
     <div className='h-52 flex justify-center items-center'>
       <div className='w-fit  text-center '>

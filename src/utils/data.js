@@ -34,23 +34,27 @@ export const data = [
     ],
     schema: [
       {
+        required: true,
         schemaName: "firstName",
         type: "string",
         minLength: { value: 1, errorMessage: "First name is required" },
         maxLength: { value: 20, errorMessage: "Maximum limit reached" },
       },
       {
+        required: true,
         schemaName: "lastName",
         type: "string",
         minLength: { value: 1, errorMessage: "Last name is required" },
         maxLength: { value: 20, errorMessage: "Maximum limit reached" },
       },
       {
+        required: true,
         schemaName: "email",
         type: "email",
         errorMessage: "Please enter a valid email id",
       },
       {
+        required: true,
         schemaName: "phoneNumber",
         type: "string",
         minLength: {
@@ -101,24 +105,28 @@ export const data = [
     ],
     schema: [
       {
+        required: true,
         schemaName: "companyName",
         type: "string",
         minLength: { value: 1, errorMessage: "Company name is required" },
         maxLength: { value: 100, errorMessage: "Maximum limit reached" },
       },
       {
+        required: true,
         schemaName: "position",
         type: "string",
         minLength: { value: 1, errorMessage: "Position is required" },
         maxLength: { value: 50, errorMessage: "Maximum limit reached" },
       },
       {
+        required: true,
         schemaName: "experience",
         type: "dropdown",
         enum: ["0-2 Years", "3-5 Years", "6-10 Years", "10+ Years"],
         errorMessage: "Please select your years of experience",
       },
       {
+        required: true,
         schemaName: "industry",
         type: "string",
         minLength: { value: 1, errorMessage: "Industry is required" },
@@ -161,6 +169,7 @@ export const data = [
     ],
     schema: [
       {
+        required: true,
         schemaName: "cardNumber",
         type: "string",
         minLength: { value: 16, errorMessage: "Card number must be 16 digits" },
@@ -168,12 +177,14 @@ export const data = [
         regex: "^[0-9]+$",
       },
       {
+        required: true,
         schemaName: "cardHolderName",
         type: "string",
         minLength: { value: 1, errorMessage: "Cardholder name is required" },
         maxLength: { value: 50, errorMessage: "Maximum limit reached" },
       },
       {
+        required: true,
         schemaName: "cvv",
         type: "string",
         minLength: { value: 3, errorMessage: "Invalid CVV" },
@@ -181,10 +192,14 @@ export const data = [
         regex: "^[0-9]+$",
       },
       {
+        required: true,
         schemaName: "expiryDate",
         type: "date",
         errorMessage: "Invalid expiry date",
       },
     ],
+  },
+  {
+    id: "formEnd",
   },
 ];

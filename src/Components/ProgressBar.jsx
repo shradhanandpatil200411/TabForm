@@ -1,15 +1,23 @@
 import React from "react";
 
-function ProgressBar({ progress, heading }) {
+function ProgressBar({ id, progress, heading }) {
   return (
-    <div className='flex text-center flex-col gap-1'>
-      <h1 className='text-sm font-semibold'>{heading}</h1>
-      <div className='w-full border h-1 border-gray-400 rounded-lg overflow-hidden'>
+    <>
+      {id !== "formEnd" && (
         <div
-          style={{ width: progress + "%" }}
-          className='bg-green-400 h-full'></div>
-      </div>
-    </div>
+          className='flex w-full text-center flex-col  gap-1'
+          style={{ display: progress[id] > 100 ? "none" : "block" }}>
+          <h1 className='text-xs font-semibold'>{heading}</h1>
+          <div className='w-full border h-1 border-gray-400  overflow-hidden'>
+            <div
+              style={{
+                width: progress[id] + "%",
+              }}
+              className='bg-green-400 h-full'></div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

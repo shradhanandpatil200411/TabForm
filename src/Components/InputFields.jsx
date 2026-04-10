@@ -42,19 +42,19 @@ function InputFields({ label, registerName, type, option, register, errors }) {
             id={registerName}
             type={type}
             {...register(registerName)}
-            className='border w-full border-gray-300 outline-gray-400 rounded-sm p-1 shadow-sm'
+            className={`border w-full ${errors[registerName] ? "border-red-400" : "border-gray-300"} outline-blue-400 rounded-sm p-1 shadow-sm`}
           />
         );
     }
   };
 
   return (
-    <div className='flex relative flex-col gap-1 min-h-[4rem] mb-2'>
+    <div className='flex relative flex-col gap-1  mb-2'>
       <label className='font-semibold text-sm' htmlFor={registerName}>
         {label}
       </label>
 
-      <div className='w-full flex flex-col'>{renderInput()}</div>
+      <div className='w-full flex flex-col '>{renderInput()}</div>
 
       {errors[registerName] && (
         <span className='text-xs font-semibold text-red-500 absolute -bottom-4'>

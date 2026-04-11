@@ -22,7 +22,7 @@ function InputFields({
         return (
           <select
             {...register(registerName)}
-            className='border w-full border-gray-300 outline-gray-400 rounded-sm p-1 shadow-sm bg-white'
+            className={`border ${currentError ? "border-red-400" : "border-gray-600"} w-full border-gray-300 outline-gray-400 rounded-sm p-1 shadow-sm bg-white`}
             id={registerName}>
             <option value=''>Select {label}...</option>
             {option.map((op, i) => (
@@ -61,7 +61,6 @@ function InputFields({
                 <InputFields
                   {...nestedInput}
                   register={register}
-                  // FIX 1: Pass the entire errors object down intact
                   errors={errors}
                 />
               </div>
@@ -76,14 +75,14 @@ function InputFields({
             id={registerName}
             type={type}
             {...register(registerName)}
-            className={`border w-full ${errors[registerName] ? "border-red-400 outline-red-400" : "border-gray-400 outline-green-400"}  rounded-sm p-1 shadow-sm`}
+            className={`border w-full ${currentError ? "border-red-400 outline-red-400" : "border-gray-400 "} outline-blue-500  rounded-sm p-1 shadow-sm`}
           />
         );
     }
   };
 
   return (
-    <div className='flex relative flex-col gap-1  mb-2'>
+    <div className='flex  relative flex-col gap-1  mb-2'>
       {type !== "section" && (
         <label className='font-semibold text-sm' htmlFor={registerName}>
           {label}

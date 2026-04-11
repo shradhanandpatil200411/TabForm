@@ -12,6 +12,7 @@ function MainForm({
   setProgress,
   id,
   setAllFormData,
+  allFormData,
 }) {
   const { formSchema } = useFormSchema(schema);
 
@@ -21,7 +22,7 @@ function MainForm({
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { experience: "0-2 Years" },
+    defaultValues: allFormData[id] || { experience: "0-2 Years" },
   });
 
   const submitHandler = (data) => {
@@ -46,10 +47,6 @@ function MainForm({
               onClick={() => {
                 if (formTab >= 0) {
                   setFormTab((prev) => prev - 1);
-                  setProgress((prev) => ({
-                    ...prev,
-                    [id]: 0,
-                  }));
                 }
               }}
               className='cursor-pointer text-blue-400 text-sm font-semibold'>
@@ -60,11 +57,12 @@ function MainForm({
         <form onSubmit={handleSubmit(submitHandler)}>
           {inputFields.map((input) => {
             return (
-              <div className='my-4' key={input.id}>
+              <div className='my-4 ' key={input.id}>
                 <InputFields {...input} register={register} errors={errors} />
               </div>
             );
           })}
+
           <div className='w-fit mx-auto my-4'>
             <button className='bg-blue-400 px-4 py-2 rounded-lg outline-none text-white font-semibold cursor-pointer '>
               Process to Next

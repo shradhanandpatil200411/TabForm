@@ -27,15 +27,18 @@ function buildFormSchema(schema) {
       case "string":
         baseSchema = z
           .string({
-            required_error: field.errorMessage || "This field is required",
+            required_error:
+              field.errorMessage ||
+              field.errorMessage ||
+              "This field is required",
           })
           .min(
             field.minLength?.value || 1,
-            field.minLength?.errorMessage || "Too short",
+            field.minLength?.errorMessage || field.errorMessage || "Too short",
           )
           .max(
             field.maxLength?.value || 999,
-            field.maxLength?.errorMessage || "Too long",
+            field.maxLength?.errorMessage || field.errorMessage || "Too long",
           );
         break;
 
@@ -56,7 +59,7 @@ function buildFormSchema(schema) {
               .string()
               .default(validOptions[0])
               .refine((val) => validOptions.includes(val), {
-                message: "Invalid selection",
+                message: field.errorMessage || "Invalid selection",
               });
           } else {
             baseSchema = z.string();

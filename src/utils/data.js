@@ -35,11 +35,9 @@ export const data = [
         id: "3A",
         label: "Residential Information",
         registerName: "residentialInfo",
-        type: "section", // ← trigger for recursion
+        type: "section",
         option: [],
         fields: [
-          // ← child fields (same structure!)
-
           {
             id: "3a",
             label: "Street Address",
@@ -55,16 +53,13 @@ export const data = [
             option: [],
           },
 
-          // ✅ Level 2 — Section inside Section!
           {
             id: "3c",
             label: "Location Details",
             registerName: "residentialInfo.locationDetails",
-            type: "section", // ← recursion again!
+            type: "section",
             option: [],
             fields: [
-              // ← grandchild fields
-
               {
                 id: "3c1",
                 label: "State",
@@ -79,8 +74,6 @@ export const data = [
                 type: "text",
                 option: [],
               },
-
-              // ✅ Level 3 — Even deeper!
               {
                 id: "3c3",
                 label: "Landmark",
@@ -93,14 +86,6 @@ export const data = [
                     label: "Near",
                     registerName:
                       "residentialInfo.locationDetails.landmark.near",
-                    type: "text",
-                    option: [],
-                  },
-                  {
-                    id: "3c3b",
-                    label: "Distance (km)",
-                    registerName:
-                      "residentialInfo.locationDetails.landmark.distance",
                     type: "text",
                     option: [],
                   },
@@ -147,7 +132,7 @@ export const data = [
         },
         regex: "^[0-9]+$",
       },
-      // Inside data.js -> personalInfo object -> schema array
+
       {
         schemaName: "residentialInfo",
         type: "nested",
@@ -166,7 +151,6 @@ export const data = [
             minLength: { value: 1, errorMessage: "City is required" },
             maxLength: { value: 50, errorMessage: "Too long" },
           },
-          // FIX: Add the missing locationDetails nested block here
           {
             schemaName: "locationDetails",
             type: "nested",
@@ -186,7 +170,7 @@ export const data = [
                 maxLength: { value: 6, errorMessage: "Invalid pin code" },
                 regex: "^[0-9]+$",
               },
-              // FIX: Add the missing landmark nested block here
+
               {
                 schemaName: "landmark",
                 type: "nested",
@@ -196,12 +180,6 @@ export const data = [
                     type: "string",
                     required: true,
                     errorMessage: "Nearby landmark is required",
-                  },
-                  {
-                    schemaName: "distance",
-                    type: "string",
-                    required: true,
-                    errorMessage: "Distance is required",
                   },
                 ],
               },

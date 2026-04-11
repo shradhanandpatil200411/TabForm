@@ -25,7 +25,7 @@ function MainForm({
   });
 
   const submitHandler = (data) => {
-    setAllFormData((prev) => ({ ...prev, ...data }));
+    setAllFormData((prev) => ({ ...prev, [id]: { ...data } }));
 
     if (id != "formEnd") {
       setFormTab((prev) => prev + 1);
@@ -53,16 +53,18 @@ function MainForm({
                 }
               }}
               className='cursor-pointer text-blue-400 text-sm font-semibold'>
-              Back to previews
+              Back to Previous
             </span>
           )}
         </div>
         <form onSubmit={handleSubmit(submitHandler)}>
-          {inputFields.map((input) => (
-            <div className='my-4' key={input.id}>
-              <InputFields {...input} register={register} errors={errors} />
-            </div>
-          ))}
+          {inputFields.map((input) => {
+            return (
+              <div className='my-4' key={input.id}>
+                <InputFields {...input} register={register} errors={errors} />
+              </div>
+            );
+          })}
           <div className='w-fit mx-auto my-4'>
             <button className='bg-blue-400 px-4 py-2 rounded-lg outline-none text-white font-semibold cursor-pointer '>
               Process to Next

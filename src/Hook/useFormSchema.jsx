@@ -1,8 +1,7 @@
 import * as z from "zod";
 
-function useFormSchema(schema) {
-  // Guard clause to prevent mapping over undefined
-  if (!schema || !Array.isArray(schema)) return { formSchema: z.object({}) };
+function buildFormSchema(schema) {
+  if (!schema || !Array.isArray(schema)) return z.object({});
 
   const schemaObj = {};
 
@@ -11,6 +10,11 @@ function useFormSchema(schema) {
     if (!name) return;
 
     let baseSchema;
+
+    if (field.type === "nested" && field.fields) {
+      schemaObj[name] = z.object(buildFormSchema(field.fields));
+      return;
+    }
 
     switch (field.type) {
       case "email":
@@ -50,9 +54,7 @@ function useFormSchema(schema) {
           if (validOptions && validOptions.length > 0) {
             baseSchema = z
               .string()
-              // THE FIX: Tell Zod to automatically use the first option if it receives "" or undefined
               .default(validOptions[0])
-
               .refine((val) => validOptions.includes(val), {
                 message: "Invalid selection",
               });
@@ -72,7 +74,6 @@ function useFormSchema(schema) {
         return;
     }
 
-    // THE FLEX: Handle optional fields dynamically!
     if (field.required === false) {
       schemaObj[name] = baseSchema.optional();
     } else {
@@ -80,7 +81,14 @@ function useFormSchema(schema) {
     }
   });
 
-  return { formSchema: z.object(schemaObj) };
+  return schemaObj;
+}
+
+function useFormSchema(schema) {
+  if (!schema || !Array.isArray(schema)) {
+    return { formSchema: z.object({}) };
+  }
+  return { formSchema: z.object(buildFormSchema(schema)) };
 }
 
 export default useFormSchema;

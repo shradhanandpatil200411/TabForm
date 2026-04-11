@@ -31,7 +31,87 @@ export const data = [
         type: "text",
         option: [],
       },
+      {
+        id: "3A",
+        label: "Residential Information",
+        registerName: "residentialInfo",
+        type: "section", // ← trigger for recursion
+        option: [],
+        fields: [
+          // ← child fields (same structure!)
+
+          {
+            id: "3a",
+            label: "Street Address",
+            registerName: "residentialInfo.street",
+            type: "text",
+            option: [],
+          },
+          {
+            id: "3b",
+            label: "City",
+            registerName: "residentialInfo.city",
+            type: "text",
+            option: [],
+          },
+
+          // ✅ Level 2 — Section inside Section!
+          {
+            id: "3c",
+            label: "Location Details",
+            registerName: "residentialInfo.locationDetails",
+            type: "section", // ← recursion again!
+            option: [],
+            fields: [
+              // ← grandchild fields
+
+              {
+                id: "3c1",
+                label: "State",
+                registerName: "residentialInfo.locationDetails.state",
+                type: "dropdown",
+                option: ["Maharashtra", "Delhi", "Karnataka"],
+              },
+              {
+                id: "3c2",
+                label: "Pin Code",
+                registerName: "residentialInfo.locationDetails.pinCode",
+                type: "text",
+                option: [],
+              },
+
+              // ✅ Level 3 — Even deeper!
+              {
+                id: "3c3",
+                label: "Landmark",
+                registerName: "residentialInfo.locationDetails.landmark",
+                type: "section",
+                option: [],
+                fields: [
+                  {
+                    id: "3c3a",
+                    label: "Near",
+                    registerName:
+                      "residentialInfo.locationDetails.landmark.near",
+                    type: "text",
+                    option: [],
+                  },
+                  {
+                    id: "3c3b",
+                    label: "Distance (km)",
+                    registerName:
+                      "residentialInfo.locationDetails.landmark.distance",
+                    type: "text",
+                    option: [],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
     ],
+
     schema: [
       {
         required: true,
@@ -66,6 +146,68 @@ export const data = [
           errorMessage: "Phone number must be exactly 10 digits",
         },
         regex: "^[0-9]+$",
+      },
+      // Inside data.js -> personalInfo object -> schema array
+      {
+        schemaName: "residentialInfo",
+        type: "nested",
+        fields: [
+          {
+            schemaName: "street",
+            type: "string",
+            required: true,
+            minLength: { value: 1, errorMessage: "Street is required" },
+            maxLength: { value: 100, errorMessage: "Too long" },
+          },
+          {
+            schemaName: "city",
+            type: "string",
+            required: true,
+            minLength: { value: 1, errorMessage: "City is required" },
+            maxLength: { value: 50, errorMessage: "Too long" },
+          },
+          // FIX: Add the missing locationDetails nested block here
+          {
+            schemaName: "locationDetails",
+            type: "nested",
+            fields: [
+              {
+                schemaName: "state",
+                type: "dropdown",
+                required: true,
+                enum: ["Maharashtra", "Delhi", "Karnataka"],
+                errorMessage: "Please select a state",
+              },
+              {
+                schemaName: "pinCode",
+                type: "string",
+                required: true,
+                minLength: { value: 6, errorMessage: "Invalid pin code" },
+                maxLength: { value: 6, errorMessage: "Invalid pin code" },
+                regex: "^[0-9]+$",
+              },
+              // FIX: Add the missing landmark nested block here
+              {
+                schemaName: "landmark",
+                type: "nested",
+                fields: [
+                  {
+                    schemaName: "near",
+                    type: "string",
+                    required: true,
+                    errorMessage: "Nearby landmark is required",
+                  },
+                  {
+                    schemaName: "distance",
+                    type: "string",
+                    required: true,
+                    errorMessage: "Distance is required",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     ],
   },

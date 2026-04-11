@@ -1,10 +1,24 @@
 import React from "react";
 
-function InputFields({ label, registerName, type, option, register, errors }) {
+function InputFields({
+  label,
+  registerName,
+  type,
+  option,
+  register,
+  errors,
+  fields,
+}) {
+  const getNestedError = (errObj, path) => {
+    if (!path || !errObj) return undefined;
+    return path.split(".").reduce((acc, key) => acc?.[key], errObj);
+  };
+
+  const currentError = getNestedError(errors, registerName);
+
   const renderInput = () => {
     switch (type) {
       case "dropdown":
-      case "select":
         return (
           <select
             {...register(registerName)}
@@ -36,13 +50,33 @@ function InputFields({ label, registerName, type, option, register, errors }) {
           </div>
         );
 
+      case "section": {
+        return (
+          <div className=' border-gray-200 rounded-lg  mt-2'>
+            <h3 className='font-bold text-sm text-gray-600 mb-3 border-b pb-1'>
+              {label}
+            </h3>
+            {fields.map((nestedInput) => (
+              <div className='my-3' key={nestedInput.id}>
+                <InputFields
+                  {...nestedInput}
+                  register={register}
+                  // FIX 1: Pass the entire errors object down intact
+                  errors={errors}
+                />
+              </div>
+            ))}
+          </div>
+        );
+      }
+
       default:
         return (
           <input
             id={registerName}
             type={type}
             {...register(registerName)}
-            className={`border w-full ${errors[registerName] ? "border-red-400" : "border-gray-300"} outline-blue-400 rounded-sm p-1 shadow-sm`}
+            className={`border w-full ${errors[registerName] ? "border-red-400 outline-red-400" : "border-gray-400 outline-green-400"}  rounded-sm p-1 shadow-sm`}
           />
         );
     }
@@ -50,15 +84,17 @@ function InputFields({ label, registerName, type, option, register, errors }) {
 
   return (
     <div className='flex relative flex-col gap-1  mb-2'>
-      <label className='font-semibold text-sm' htmlFor={registerName}>
-        {label}
-      </label>
+      {type !== "section" && (
+        <label className='font-semibold text-sm' htmlFor={registerName}>
+          {label}
+        </label>
+      )}
 
       <div className='w-full flex flex-col '>{renderInput()}</div>
 
-      {errors[registerName] && (
-        <span className='text-xs font-semibold text-red-500 absolute -bottom-4'>
-          {errors[registerName].message}
+      {type !== "section" && currentError && (
+        <span className='text-xs font-semibold text-red-500'>
+          {currentError.message}
         </span>
       )}
     </div>
